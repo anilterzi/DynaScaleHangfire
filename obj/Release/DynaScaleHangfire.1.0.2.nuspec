@@ -1,0 +1,32 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
+  <metadata>
+    <id>DynaScaleHangfire</id>
+    <version>1.0.2</version>
+    <authors>Anil Terzi</authors>
+    <license type="expression">MIT</license>
+    <licenseUrl>https://licenses.nuget.org/MIT</licenseUrl>
+    <readme>README.md</readme>
+    <projectUrl>https://github.com/yourusername/DynaScaleHangfire</projectUrl>
+    <description>A dynamic scaling extension for Hangfire that provides real-time queue monitoring and automatic server scaling capabilities.</description>
+    <tags>hangfire dynamic scaling queue worker background-jobs</tags>
+    <repository type="git" url="https://github.com/yourusername/DynaScaleHangfire" commit="8e86c8847fec3dff63f29287a3198a504113df90" />
+    <dependencies>
+      <group targetFramework="net7.0">
+        <dependency id="Hangfire.Core" version="1.8.6" exclude="Build,Analyzers" />
+        <dependency id="Microsoft.AspNetCore.Mvc.Core" version="2.2.5" exclude="Build,Analyzers" />
+        <dependency id="Microsoft.Extensions.DependencyInjection.Abstractions" version="7.0.0" exclude="Build,Analyzers" />
+      </group>
+    </dependencies>
+    <frameworkReferences>
+      <group targetFramework="net7.0">
+        <frameworkReference name="Microsoft.AspNetCore.App" />
+      </group>
+    </frameworkReferences>
+  </metadata>
+  <files>
+    <file src="/Users/anil.terzi/Documents/GitHub/DynaScaleHangfire/bin/Release/net7.0/DynaScaleHangfire.dll" target="lib/net7.0/DynaScaleHangfire.dll" />
+    <file src="/Users/anil.terzi/Documents/GitHub/DynaScaleHangfire/wwwroot/js/dynamic-scaling.js" target="content/wwwroot/js/dynamic-scaling.js" />
+    <file src="/Users/anil.terzi/Documents/GitHub/DynaScaleHangfire/README.md" target="/README.md" />
+  </files>
+</package>

@@ -1,0 +1,27 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
+  <metadata>
+    <id>Hangfire.DynaScale</id>
+    <version>1.0.0</version>
+    <authors>Anil Terzi</authors>
+    <description>Hangfire Dynamic Scaling Package</description>
+    <tags>hangfire dynamic scaling queue worker</tags>
+    <repository type="git" commit="314b8263a1b00ebd23418b2372593f7905ae6784" />
+    <dependencies>
+      <group targetFramework="net7.0">
+        <dependency id="Hangfire.Core" version="1.8.15" exclude="Build,Analyzers" />
+        <dependency id="Microsoft.AspNetCore.Mvc.Core" version="2.2.5" exclude="Build,Analyzers" />
+        <dependency id="Microsoft.Extensions.DependencyInjection.Abstractions" version="7.0.0" exclude="Build,Analyzers" />
+      </group>
+    </dependencies>
+    <frameworkReferences>
+      <group targetFramework="net7.0">
+        <frameworkReference name="Microsoft.AspNetCore.App" />
+      </group>
+    </frameworkReferences>
+  </metadata>
+  <files>
+    <file src="/Users/anil.terzi/Documents/git/product-worker/Hangfire.DynaScale/src/Hangfire.DynaScale/bin/Debug/net7.0/Hangfire.DynaScale.dll" target="lib/net7.0/Hangfire.DynaScale.dll" />
+    <file src="/Users/anil.terzi/Documents/git/product-worker/Hangfire.DynaScale/src/Hangfire.DynaScale/wwwroot/js/dynamic-scaling.js" target="content/wwwroot/js/dynamic-scaling.js" />
+  </files>
+</package>

@@ -1,0 +1,13 @@
+/Users/anil.terzi/Documents/git/product-worker/Hangfire.DynaScale/src/Hangfire.DynaScale/obj/Debug/net8.0/Hangfire.DynaScale.csproj.AssemblyReference.cache
+/Users/anil.terzi/Documents/git/product-worker/Hangfire.DynaScale/src/Hangfire.DynaScale/obj/Debug/net8.0/Hangfire.DynaScale.GeneratedMSBuildEditorConfig.editorconfig
+/Users/anil.terzi/Documents/git/product-worker/Hangfire.DynaScale/src/Hangfire.DynaScale/obj/Debug/net8.0/Hangfire.DynaScale.AssemblyInfoInputs.cache
+/Users/anil.terzi/Documents/git/product-worker/Hangfire.DynaScale/src/Hangfire.DynaScale/obj/Debug/net8.0/Hangfire.DynaScale.AssemblyInfo.cs
+/Users/anil.terzi/Documents/git/product-worker/Hangfire.DynaScale/src/Hangfire.DynaScale/obj/Debug/net8.0/Hangfire.DynaScale.csproj.CoreCompileInputs.cache
+/Users/anil.terzi/Documents/git/product-worker/Hangfire.DynaScale/src/Hangfire.DynaScale/obj/Debug/net8.0/Hangfire.DynaScale.sourcelink.json
+/Users/anil.terzi/Documents/git/product-worker/Hangfire.DynaScale/src/Hangfire.DynaScale/bin/Debug/net8.0/Hangfire.DynaScale.deps.json
+/Users/anil.terzi/Documents/git/product-worker/Hangfire.DynaScale/src/Hangfire.DynaScale/bin/Debug/net8.0/Hangfire.DynaScale.dll
+/Users/anil.terzi/Documents/git/product-worker/Hangfire.DynaScale/src/Hangfire.DynaScale/bin/Debug/net8.0/Hangfire.DynaScale.pdb
+/Users/anil.terzi/Documents/git/product-worker/Hangfire.DynaScale/src/Hangfire.DynaScale/obj/Debug/net8.0/Hangfire.DynaScale.dll
+/Users/anil.terzi/Documents/git/product-worker/Hangfire.DynaScale/src/Hangfire.DynaScale/obj/Debug/net8.0/refint/Hangfire.DynaScale.dll
+/Users/anil.terzi/Documents/git/product-worker/Hangfire.DynaScale/src/Hangfire.DynaScale/obj/Debug/net8.0/Hangfire.DynaScale.pdb
+/Users/anil.terzi/Documents/git/product-worker/Hangfire.DynaScale/src/Hangfire.DynaScale/obj/Debug/net8.0/ref/Hangfire.DynaScale.dll
