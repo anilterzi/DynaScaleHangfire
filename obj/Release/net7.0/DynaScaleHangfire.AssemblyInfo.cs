@@ -15,7 +15,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyDescriptionAttribute("A dynamic scaling extension for Hangfire that provides real-time queue monitoring" +
     " and automatic server scaling capabilities.")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.2.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.2+8e86c8847fec3dff63f29287a3198a504113df90")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.2+59bad9df32cb2c6a545d71db84adcebc7d23a280")]
 [assembly: System.Reflection.AssemblyProductAttribute("DynaScaleHangfire")]
 [assembly: System.Reflection.AssemblyTitleAttribute("DynaScaleHangfire")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.2.0")]

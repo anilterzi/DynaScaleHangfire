@@ -11,3 +11,4 @@
 /Users/anil.terzi/Documents/GitHub/DynaScaleHangfire/obj/Release/net7.0/refint/DynaScaleHangfire.dll
 /Users/anil.terzi/Documents/GitHub/DynaScaleHangfire/obj/Release/net7.0/DynaScaleHangfire.pdb
 /Users/anil.terzi/Documents/GitHub/DynaScaleHangfire/obj/Release/net7.0/ref/DynaScaleHangfire.dll
+/Users/anil.terzi/Documents/GitHub/DynaScaleHangfire/bin/Release/net7.0/wwwroot/js/dynamic-scaling.js
