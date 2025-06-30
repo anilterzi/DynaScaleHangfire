@@ -143,20 +143,13 @@ DynaScaleHangfire/
 
 - .NET 7.0 SDK or later
 - Visual Studio 2022 or VS Code
-- Redis (for Hangfire storage)
+- Hangfire storage provider (SQL Server, Redis, PostgreSQL, etc.)
 
 ### Building
 
 ```bash
 dotnet restore
 dotnet build
-dotnet test
-```
-
-### Testing
-
-```bash
-dotnet test
 ```
 
 ### Creating NuGet Package
@@ -173,14 +166,11 @@ dotnet pack -c Release
 4. Push to the branch (`git push origin feature/amazing-feature`)
 5. Open a Pull Request
 
-## License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
 ## Contact
 
-- Project Link: [https://github.com/yourusername/DynaScaleHangfire](https://github.com/yourusername/DynaScaleHangfire)
-- Issues: [https://github.com/yourusername/DynaScaleHangfire/issues](https://github.com/yourusername/DynaScaleHangfire/issues)
+- Project Link: [https://github.com/anilterzi/DynaScaleHangfire](https://github.com/anilterzi/DynaScaleHangfire)
+- Issues: [https://github.com/anilterzi/DynaScaleHangfire/issues](https://github.com/anilterzi/DynaScaleHangfire/issues)
 
 ## Acknowledgments
 

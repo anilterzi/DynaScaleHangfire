@@ -5,7 +5,7 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <PackageId>DynaScaleHangfire</PackageId>
-    <Version>1.0.19</Version>
+    <Version>1.0.20</Version>
     <Authors>Anil Terzi</Authors>
     <Description>A dynamic scaling extension for Hangfire that provides real-time queue monitoring and automatic server scaling capabilities.</Description>
     <PackageTags>hangfire;dynamic;scaling;queue;worker;background-jobs</PackageTags>

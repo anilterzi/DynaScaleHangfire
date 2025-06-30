@@ -30,14 +30,16 @@ public sealed class DynaScaleController : ControllerBase
     }
 
     [HttpPost("queues/{queueName}/set-workers")]
-    public IActionResult SetWorkers(string queueName, [FromBody] SetWorkersRequest request)
+    public async Task<IActionResult> SetWorkers(string queueName, [FromBody] SetWorkersRequest request)
     {
         var queue = _hangfireSettings.Queues.FirstOrDefault(x => x.QueueNames.Contains(queueName));
         if (queue == null)
             return NotFound();
 
         queue.WorkerCount = request.WorkerCount;
-        _serverManager.RestartServer(queueName);
+        
+        // Server'ı güvenli şekilde yeniden başlat (job'ları beklet)
+        await _serverManager.RestartServerAsync(queueName);
 
         return Ok();
     }
