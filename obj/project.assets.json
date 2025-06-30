@@ -3579,7 +3579,7 @@
     "/Users/anil.terzi/.nuget/packages/": {}
   },
   "project": {
-    "version": "1.0.2",
+    "version": "1.0.15",
     "restore": {
       "projectUniqueName": "/Users/anil.terzi/Documents/GitHub/DynaScaleHangfire/DynaScaleHangfire.csproj",
       "projectName": "DynaScaleHangfire",

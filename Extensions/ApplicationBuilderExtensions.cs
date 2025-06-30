@@ -1,13 +1,15 @@
+using DynaScaleHangfire.Pages;
 using Microsoft.AspNetCore.Builder;
-using Hangfire.DynaScale.Controllers;
+using Hangfire.Dashboard;
 
 namespace Hangfire.DynaScale.Extensions;
 
 public static class ApplicationBuilderExtensions
 {
-    public static IApplicationBuilder UseHangfireDynaScale(this IApplicationBuilder app)
+
+    public static IApplicationBuilder UseHangfireDynaScaleWithStaticFiles(this IApplicationBuilder app)
     {
-        // DynaScaleController'ı otomatik olarak route'lara ekle
+        // DynaScaleController'ı ekle
         app.UseRouting();
         app.UseEndpoints(endpoints =>
         {
@@ -17,6 +19,18 @@ public static class ApplicationBuilderExtensions
                 defaults: new { controller = "DynaScale" });
         });
         
+        // Hangfire özel sayfa ve menü
+        DashboardRoutes.Routes.AddRazorPage("/dynamic-scaling", x => new DynamicScalingPage());
+        NavigationMenu.Items.Add(page => new MenuItem("Dynamic Scaling", page.Url.To("/dynamic-scaling"))
+        {
+            Active = page.RequestPath.StartsWith("/dynamic-scaling")
+        });
+        
         return app;
     }
+}
+
+public sealed class AllowAllConnectionsFilter : IDashboardAuthorizationFilter
+{
+    public bool Authorize(DashboardContext context) => true;
 } 

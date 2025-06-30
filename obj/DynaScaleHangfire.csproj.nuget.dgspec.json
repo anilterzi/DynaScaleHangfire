@@ -5,7 +5,7 @@
   },
   "projects": {
     "/Users/anil.terzi/Documents/GitHub/DynaScaleHangfire/DynaScaleHangfire.csproj": {
-      "version": "1.0.2",
+      "version": "1.0.15",
       "restore": {
         "projectUniqueName": "/Users/anil.terzi/Documents/GitHub/DynaScaleHangfire/DynaScaleHangfire.csproj",
         "projectName": "DynaScaleHangfire",

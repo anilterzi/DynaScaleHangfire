@@ -25,61 +25,75 @@ dotnet add package DynaScaleHangfire
 2. Build the project
 3. Reference the built assembly in your project
 
-## Usage
+## Quick Start
 
-### Basic Setup
-
-Add the service to your `Program.cs` or `Startup.cs`:
+### 1. Add Services
 
 ```csharp
-using DynaScaleHangfire;
+using Hangfire.DynaScale.Extensions;
+using Hangfire.DynaScale.Models;
 
-// Add services
-builder.Services.AddHangfireDynaScale();
+var builder = WebApplication.CreateBuilder(args);
 
-// Configure Hangfire
-builder.Services.AddHangfire(config =>
+// Add DynaScale services
+builder.Services.AddHangfireDynaScale(new HangfireSettings
 {
-    config.UseSqlServerStorage(connectionString);
+    MinWorkerCount = 1,
+    MaxWorkerCount = 10,
+    ScaleUpThreshold = 5,
+    ScaleDownThreshold = 2,
+    CheckIntervalSeconds = 30
 });
+```
 
-// Add middleware
+### 2. Configure Middleware
+
+**Option A: Automatic Setup (Recommended)**
+```csharp
+var app = builder.Build();
+
+// Automatically creates wwwroot directory and adds static files middleware
+app.UseHangfireDynaScaleWithStaticFiles();
+```
+
+**Option B: Manual Setup**
+```csharp
+var app = builder.Build();
+
+// Add static files middleware manually
+app.UseStaticFiles();
+
+// Add DynaScale routes
 app.UseHangfireDynaScale();
-app.UseHangfireDashboard();
 ```
 
-### Configuration
+### 3. Access Dashboard
 
-Configure the dynamic scaling settings in `appsettings.json`:
+Navigate to `/dynamic-scaling` to access the DynaScale dashboard.
 
-```json
-{
-  "HangfireDynaScale": {
-    "MinWorkerCount": 1,
-    "MaxWorkerCount": 10,
-    "ScaleUpThreshold": 100,
-    "ScaleDownThreshold": 10,
-    "CheckIntervalSeconds": 30
-  }
-}
-```
+## Configuration
 
-### API Endpoints
+The `HangfireSettings` class allows you to configure:
 
-The package provides the following REST endpoints:
+- `MinWorkerCount`: Minimum number of worker processes
+- `MaxWorkerCount`: Maximum number of worker processes  
+- `ScaleUpThreshold`: Queue length threshold to trigger scale up
+- `ScaleDownThreshold`: Queue length threshold to trigger scale down
+- `CheckIntervalSeconds`: How often to check queue status
 
-- `GET /dynamic-scaling/queues` - Get current queue status
-- `GET /dynamic-scaling/health` - Get service health status
-- `POST /dynamic-scaling/scale-up` - Manually trigger scale up
-- `POST /dynamic-scaling/scale-down` - Manually trigger scale down
+## How It Works
 
-### JavaScript Integration
+DynaScaleHangfire monitors your Hangfire job queues in real-time and automatically scales the number of worker processes based on the configured thresholds. When the queue length exceeds the scale-up threshold, it increases the worker count. When the queue length falls below the scale-down threshold, it decreases the worker count.
 
-Include the dynamic scaling JavaScript in your Hangfire dashboard:
+The web dashboard provides real-time monitoring of:
+- Current queue lengths
+- Active worker count
+- Scaling history
+- System performance metrics
 
-```html
-<script src="/hangfire/js/dynamic-scaling.js"></script>
-```
+## Automatic wwwroot Creation
+
+This package automatically creates a `wwwroot` directory in your project if it doesn't exist when using `UseHangfireDynaScaleWithStaticFiles()`. This ensures that Hangfire's dashboard static files are properly served.
 
 ## Project Structure
 

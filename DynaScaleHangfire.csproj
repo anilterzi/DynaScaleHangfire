@@ -5,7 +5,7 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <PackageId>DynaScaleHangfire</PackageId>
-    <Version>1.0.2</Version>
+    <Version>1.0.15</Version>
     <Authors>Anil Terzi</Authors>
     <Description>A dynamic scaling extension for Hangfire that provides real-time queue monitoring and automatic server scaling capabilities.</Description>
     <PackageTags>hangfire;dynamic;scaling;queue;worker;background-jobs</PackageTags>
@@ -25,11 +25,12 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Content Include="wwwroot\**\*.js">
-      <Pack>true</Pack>
-      <PackagePath>contentFiles\any\any\wwwroot\</PackagePath>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
+    <None Include="wwwroot\**\*.js" Pack="true" PackagePath="contentFiles\any\any\wwwroot\" />
+    <None Include="README.md" Pack="true" PackagePath="/" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="build\" />
   </ItemGroup>
 
 </Project> 
