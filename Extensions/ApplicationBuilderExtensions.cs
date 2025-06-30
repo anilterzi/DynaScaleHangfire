@@ -9,6 +9,16 @@ public static class ApplicationBuilderExtensions
 
     public static IApplicationBuilder UseHangfireDynaScaleWithStaticFiles(this IApplicationBuilder app)
     {
+        // wwwroot dizinini kontrol et ve oluştur
+        var wwwrootPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot");
+        if (!Directory.Exists(wwwrootPath))
+        {
+            Directory.CreateDirectory(wwwrootPath);
+        }
+
+        // Static files middleware'ini ekle
+        app.UseStaticFiles();
+        
         // DynaScaleController'ı ekle
         app.UseRouting();
         app.UseEndpoints(endpoints =>
