@@ -10,6 +10,7 @@ A dynamic scaling extension for Hangfire that provides real-time queue monitorin
 - **Web Dashboard Integration**: Seamless integration with Hangfire dashboard
 - **Configurable Scaling Rules**: Customizable thresholds and scaling policies
 - **Health Monitoring**: Built-in health checks and status reporting
+- **Automatic Static Files**: JavaScript files are automatically copied to build output
 
 ## Installation
 
@@ -83,12 +84,17 @@ The `HangfireSettings` class allows you to configure:
 
 ## How It Works
 
-DynaScaleHangfire monitors your Hangfire job queues in real-time and automatically scales the number of worker processes based on the configured thresholds. When the queue length exceeds the scale-up threshold, it increases the worker count. When the queue length falls below the scale-down threshold, it decreases the worker count.
+DynaScaleHangfire monitors your Hangfire job queues in real-time and provides a web interface for managing worker counts. The system allows you to:
+
+- View current queue configurations
+- Modify worker counts for specific queues
+- Restart servers with new configurations
+- Monitor queue performance
 
 The web dashboard provides real-time monitoring of:
-- Current queue lengths
-- Active worker count
-- Scaling history
+- Current queue configurations
+- Active worker counts
+- Queue management interface
 - System performance metrics
 
 ## Automatic wwwroot Creation
@@ -109,10 +115,17 @@ DynaScaleHangfire/
 ├── Services/
 │   ├── HangfireServerManager.cs       # Core scaling logic
 │   └── IHangfireServerManager.cs      # Service interface
+├── build/
+│   └── DynaScaleHangfire.targets      # MSBuild targets for file copying
 └── wwwroot/
     └── js/
         └── dynamic-scaling.js         # Frontend JavaScript
 ```
+
+## API Endpoints
+
+- `GET /dynamic-scaling/queues` - Get current queue configurations
+- `POST /dynamic-scaling/queues/{queueName}/set-workers` - Update worker count for a queue
 
 ## Configuration Options
 
@@ -130,7 +143,7 @@ DynaScaleHangfire/
 
 - .NET 7.0 SDK or later
 - Visual Studio 2022 or VS Code
-- SQL Server (for Hangfire storage)
+- Redis (for Hangfire storage)
 
 ### Building
 
