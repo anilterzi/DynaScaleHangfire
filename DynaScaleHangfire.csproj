@@ -5,7 +5,7 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <PackageId>DynaScaleHangfire</PackageId>
-    <Version>1.0.16</Version>
+    <Version>1.0.19</Version>
     <Authors>Anil Terzi</Authors>
     <Description>A dynamic scaling extension for Hangfire that provides real-time queue monitoring and automatic server scaling capabilities.</Description>
     <PackageTags>hangfire;dynamic;scaling;queue;worker;background-jobs</PackageTags>
@@ -18,6 +18,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    
     <PackageReference Include="Hangfire.Core" Version="1.8.6" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Core" Version="2.2.5" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="7.0.0" />
@@ -27,10 +28,7 @@
   <ItemGroup>
     <None Include="wwwroot\**\*.js" Pack="true" PackagePath="contentFiles\any\any\wwwroot\" />
     <None Include="README.md" Pack="true" PackagePath="/" />
+    <None Include="build\DynaScaleHangfire.targets" Pack="true" PackagePath="build\" />
   </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="build\" />
-  </ItemGroup>
-
+  
 </Project> 
