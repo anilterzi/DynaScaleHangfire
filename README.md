@@ -49,7 +49,6 @@ builder.Services.AddHangfireDynaScale(new HangfireSettings
 
 ### 2. Configure Middleware
 
-**Option A: Automatic Setup (Recommended)**
 ```csharp
 var app = builder.Build();
 
@@ -57,16 +56,6 @@ var app = builder.Build();
 app.UseHangfireDynaScaleWithStaticFiles();
 ```
 
-**Option B: Manual Setup**
-```csharp
-var app = builder.Build();
-
-// Add static files middleware manually
-app.UseStaticFiles();
-
-// Add DynaScale routes
-app.UseHangfireDynaScale();
-```
 
 ### 3. Access Dashboard
 
