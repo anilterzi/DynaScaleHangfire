@@ -9,17 +9,14 @@ public static class ApplicationBuilderExtensions
 
     public static IApplicationBuilder UseHangfireDynaScaleWithStaticFiles(this IApplicationBuilder app)
     {
-        // wwwroot dizinini kontrol et ve oluştur
         var wwwrootPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot");
         if (!Directory.Exists(wwwrootPath))
         {
             Directory.CreateDirectory(wwwrootPath);
         }
 
-        // Static files middleware'ini ekle
         app.UseStaticFiles();
         
-        // DynaScaleController'ı ekle
         app.UseRouting();
         app.UseEndpoints(endpoints =>
         {
@@ -29,7 +26,6 @@ public static class ApplicationBuilderExtensions
                 defaults: new { controller = "DynaScale" });
         });
         
-        // Hangfire özel sayfa ve menü
         DashboardRoutes.Routes.AddRazorPage("/dynamic-scaling", x => new DynamicScalingPage());
         NavigationMenu.Items.Add(page => new MenuItem("Dynamic Scaling", page.Url.To("/dynamic-scaling"))
         {

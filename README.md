@@ -1,15 +1,18 @@
 # DynaScaleHangfire
 
-A dynamic scaling extension for Hangfire that provides real-time queue monitoring and automatic server scaling capabilities.
+A dynamic scaling extension for Hangfire that provides real-time server and queue monitoring with dynamic worker count management and actual server restart capabilities.
 
 ## Features
 
-- **Real-time Queue Monitoring**: Monitor job queue lengths and processing status
-- **Dynamic Server Scaling**: Automatically scale Hangfire servers based on queue load
-- **RESTful API**: Simple HTTP endpoints for queue management
+- **Real Server Restart**: Actually stop and restart Hangfire servers with new worker counts
+- **Queue-based Worker Management**: Update worker counts for specific queues on individual servers
+- **Job Processing Safety**: Automatically pause job processing before server restart
+- **Active Server Monitoring**: Only display active servers (last heartbeat within 1 minute)
+- **Queue Aggregation**: Combine duplicate queues within the same server
+- **Modern UI**: Horizontal layout with improved queue management interface
+- **Machine-based Grouping**: Group servers by machine name for better organization
+- **RESTful API**: Simple HTTP endpoints for server-queue management
 - **Web Dashboard Integration**: Seamless integration with Hangfire dashboard
-- **Configurable Scaling Rules**: Customizable thresholds and scaling policies
-- **Health Monitoring**: Built-in health checks and status reporting
 - **Automatic Static Files**: JavaScript files are automatically copied to build output
 
 ## Installation
@@ -36,15 +39,14 @@ using Hangfire.DynaScale.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add DynaScale services
-builder.Services.AddHangfireDynaScale(new HangfireSettings
+// Add DynaScale services with custom options
+builder.Services.AddHangfireDynaScale(new DynaScaleOptions
 {
-    MinWorkerCount = 1,
-    MaxWorkerCount = 10,
-    ScaleUpThreshold = 5,
-    ScaleDownThreshold = 2,
-    CheckIntervalSeconds = 30
+    MaxWorkerCountPerQueue = 50
 });
+
+// Or use default options
+builder.Services.AddHangfireDynaScale();
 ```
 
 ### 2. Configure Middleware
@@ -56,35 +58,44 @@ var app = builder.Build();
 app.UseHangfireDynaScaleWithStaticFiles();
 ```
 
-
 ### 3. Access Dashboard
 
 Navigate to `/dynamic-scaling` to access the DynaScale dashboard.
 
 ## Configuration
 
-The `HangfireSettings` class allows you to configure:
+### DynaScaleOptions
 
-- `MinWorkerCount`: Minimum number of worker processes
-- `MaxWorkerCount`: Maximum number of worker processes  
-- `ScaleUpThreshold`: Queue length threshold to trigger scale up
-- `ScaleDownThreshold`: Queue length threshold to trigger scale down
-- `CheckIntervalSeconds`: How often to check queue status
+```csharp
+public sealed record DynaScaleOptions
+{
+    public int MaxWorkerCountPerQueue { get; init; } = 100;
+}
+```
+
+- `MaxWorkerCountPerQueue`: Maximum number of workers that can be set for any queue (default: 100)
 
 ## How It Works
 
-DynaScaleHangfire monitors your Hangfire job queues in real-time and provides a web interface for managing worker counts. The system allows you to:
+DynaScaleHangfire provides real-time server management with actual server restart capabilities:
 
-- View current queue configurations
-- Modify worker counts for specific queues
-- Restart servers with new configurations
-- Monitor queue performance
+### Server Restart Process
+1. **Pause Job Processing**: Temporarily pause new job assignments to the target server
+2. **Wait for Completion**: Wait for currently processing jobs to complete
+3. **Stop Server**: Remove the server from Hangfire's storage
+4. **Restart Server**: Create a new BackgroundJobServer with updated worker count
+5. **Resume Processing**: New jobs can be assigned to the restarted server
 
-The web dashboard provides real-time monitoring of:
-- Current queue configurations
-- Active worker counts
-- Queue management interface
-- System performance metrics
+### Queue Management
+- **Queue Aggregation**: Duplicate queues within the same server are combined
+- **Worker Count Calculation**: Total worker count is calculated per queue per server
+- **Active Server Filtering**: Only servers with recent heartbeats are displayed
+
+### Dashboard Features
+- **Horizontal Layout**: Queue information and controls are displayed side by side
+- **Real-time Updates**: Automatic page refresh after worker count changes
+- **Server Status**: Active/inactive status with last heartbeat information
+- **Machine Grouping**: Servers are grouped by machine name for better organization
 
 ## Automatic wwwroot Creation
 
@@ -100,10 +111,14 @@ DynaScaleHangfire/
 │   ├── ApplicationBuilderExtensions.cs # Middleware configuration
 │   └── ServiceCollectionExtensions.cs  # DI configuration
 ├── Models/
-│   └── HangfireSettings.cs            # Configuration models
+│   ├── DynaScaleOptions.cs            # Configuration options
+│   ├── ServerInfoModel.cs             # Data models
+│   └── SetWorkersRequest.cs           # API request model
 ├── Services/
-│   ├── HangfireServerManager.cs       # Core scaling logic
+│   ├── HangfireServerManager.cs       # Core server management logic
 │   └── IHangfireServerManager.cs      # Service interface
+├── Pages/
+│   └── DynamicScalingPage.cs          # Dashboard page
 ├── build/
 │   └── DynaScaleHangfire.targets      # MSBuild targets for file copying
 └── wwwroot/
@@ -113,18 +128,80 @@ DynaScaleHangfire/
 
 ## API Endpoints
 
-- `GET /dynamic-scaling/queues` - Get current queue configurations
-- `POST /dynamic-scaling/queues/{queueName}/set-workers` - Update worker count for a queue
+- `GET /dynamic-scaling/servers` - Get all active server-queue configurations grouped by machine
+- `POST /dynamic-scaling/servers/{serverName}/queues/{queueName}/set-workers` - Update worker count for a specific server-queue
 
-## Configuration Options
+### Request Body for Set Workers
 
-| Setting | Type | Default | Description |
-|---------|------|---------|-------------|
-| MinWorkerCount | int | 1 | Minimum number of worker servers |
-| MaxWorkerCount | int | 10 | Maximum number of worker servers |
-| ScaleUpThreshold | int | 100 | Queue length threshold for scaling up |
-| ScaleDownThreshold | int | 10 | Queue length threshold for scaling down |
-| CheckIntervalSeconds | int | 30 | Interval between scaling checks |
+```json
+{
+  "workerCount": 5,
+  "applyToAllServers": false
+}
+```
+
+- `workerCount`: The new worker count to set
+- `applyToAllServers`: If true, applies the worker count to all servers for this queue
+
+## Data Models
+
+### ServerInfo
+
+```csharp
+public sealed record ServerInfo
+{
+    public string ServerName { get; init; }        // Machine name
+    public bool IsActive { get; init; }            // Server activity status
+    public DateTime LastHeartbeat { get; init; }   // Last heartbeat time
+    public List<QueueInfo> Queues { get; init; }   // Queue configurations
+}
+```
+
+### QueueInfo
+
+```csharp
+public sealed record QueueInfo
+{
+    public string ServerName { get; init; }        // Actual server name
+    public string QueueName { get; init; }         // Queue name
+    public int CurrentWorkerCount { get; init; }   // Current worker count
+    public int MaxWorkerCount { get; init; }       // Maximum worker count
+}
+```
+
+### SetWorkersRequest
+
+```csharp
+public sealed record SetWorkersRequest
+{
+    public int WorkerCount { get; init; }
+    public bool ApplyToAllServers { get; init; }
+}
+```
+
+## Key Features Explained
+
+### Real Server Restart
+Unlike other solutions that only update configuration, DynaScaleHangfire actually:
+- Stops the existing BackgroundJobServer
+- Creates a new BackgroundJobServer with updated settings
+- Ensures job processing safety during the restart process
+
+### Queue Aggregation
+- Combines duplicate queue names within the same server
+- Calculates total worker count for each unique queue
+- Maintains individual server separation
+
+### Active Server Filtering
+- Only displays servers with heartbeats within the last minute
+- Automatically hides inactive or disconnected servers
+- Provides real-time server status monitoring
+
+### Modern UI
+- Horizontal layout for better space utilization
+- Side-by-side queue information and controls
+- Automatic page refresh after changes
+- Responsive design for different screen sizes
 
 ## Development
 
@@ -155,7 +232,6 @@ dotnet pack -c Release
 4. Push to the branch (`git push origin feature/amazing-feature`)
 5. Open a Pull Request
 
-
 ## Contact
 
 - Project Link: [https://github.com/anilterzi/DynaScaleHangfire](https://github.com/anilterzi/DynaScaleHangfire)
@@ -164,5 +240,5 @@ dotnet pack -c Release
 ## Acknowledgments
 
 - Built on top of [Hangfire](https://www.hangfire.io/)
-- Inspired by modern microservices scaling patterns
+- Uses Hangfire's monitoring APIs for real-time data
 - Community contributions and feedback 

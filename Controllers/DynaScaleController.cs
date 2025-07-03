@@ -6,46 +6,35 @@ namespace Hangfire.DynaScale.Controllers;
 
 [ApiController]
 [Route("dynamic-scaling")]
+[ApiExplorerSettings(IgnoreApi = true)]
 public sealed class DynaScaleController : ControllerBase
 {
-    private readonly HangfireSettings _hangfireSettings;
     private readonly IHangfireServerManager _serverManager;
 
-    public DynaScaleController(
-        HangfireSettings hangfireSettings,
-        IHangfireServerManager serverManager)
+    public DynaScaleController(IHangfireServerManager serverManager)
     {
-        _hangfireSettings = hangfireSettings;
         _serverManager = serverManager;
     }
 
-    [HttpGet("queues")]
-    public IActionResult GetQueues()
+    [HttpGet("servers")]
+    public IActionResult GetServers()
     {
-        var queues = _hangfireSettings.Queues
-            .SelectMany(q => q.QueueNames.Select(name => new { name, workerCount = q.WorkerCount }))
-            .ToList();
-
-        return Ok(queues);
+        var servers = _serverManager.GetServerInfo();
+        return Ok(servers);
     }
 
-    [HttpPost("queues/{queueName}/set-workers")]
-    public async Task<IActionResult> SetWorkers(string queueName, [FromBody] SetWorkersRequest request)
+    [HttpPost("servers/{serverName}/queues/{queueName}/set-workers")]
+    public async Task<IActionResult> SetWorkers(string serverName, string queueName, [FromBody] SetWorkersRequest request)
     {
-        var queue = _hangfireSettings.Queues.FirstOrDefault(x => x.QueueNames.Contains(queueName));
-        if (queue == null)
-            return NotFound();
-
-        queue.WorkerCount = request.WorkerCount;
-        
-        // Server'ı güvenli şekilde yeniden başlat (job'ları beklet)
-        await _serverManager.RestartServerAsync(queueName);
+        if (request.ApplyToAllServers)
+        {
+            await _serverManager.SetWorkerCountForAllServersAsync(queueName, request.WorkerCount);
+        }
+        else
+        {
+            await _serverManager.SetWorkerCountAsync(serverName, queueName, request.WorkerCount);
+        }
 
         return Ok();
     }
 }
-
-public sealed record SetWorkersRequest
-{
-    public int WorkerCount { get; init; }
-} 

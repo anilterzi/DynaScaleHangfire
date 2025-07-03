@@ -5,15 +5,15 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <PackageId>DynaScaleHangfire</PackageId>
-    <Version>1.0.20</Version>
+    <Version>1.0.29</Version>
     <Authors>Anil Terzi</Authors>
     <Description>A dynamic scaling extension for Hangfire that provides real-time queue monitoring and automatic server scaling capabilities.</Description>
     <PackageTags>hangfire;dynamic;scaling;queue;worker;background-jobs</PackageTags>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
-    <PackageProjectUrl>https://github.com/yourusername/DynaScaleHangfire</PackageProjectUrl>
-    <RepositoryUrl>https://github.com/yourusername/DynaScaleHangfire</RepositoryUrl>
+    <PackageProjectUrl>https://github.com/anilterzi/DynaScaleHangfire</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/anilterzi/DynaScaleHangfire</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
   </PropertyGroup>
 
